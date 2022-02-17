@@ -12,6 +12,12 @@ public class App
         // Connect to database
         a.connect();
 
+        // Get Employee
+        Employee emp = a.getEmployee(255530);
+
+        // Display results
+        a.displayEmployee(emp);
+
         // Disconnect from database
         a.disconnect();
     }
@@ -91,6 +97,8 @@ public class App
             String strSelect =
                     "SELECT emp_no, first_name, last_name "
                             + "FROM employees "
+                            //+ "LEFT OUTER JOIN titles ON employees.emp_no=titles.emp_no "
+                            //+ "LEFT JOIN salaries ON employees.emp_no=salaries.emp_no "
                             + "WHERE emp_no = " + ID;
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
@@ -102,6 +110,8 @@ public class App
                 emp.emp_no = rset.getInt("emp_no");
                 emp.first_name = rset.getString("first_name");
                 emp.last_name = rset.getString("last_name");
+                //emp.title = rset.getString("title");
+                //emp.salary = rset.getInt("salary");
                 return emp;
             }
             else
@@ -112,6 +122,21 @@ public class App
             System.out.println(e.getMessage());
             System.out.println("Failed to get employee details");
             return null;
+        }
+    }
+
+    public void displayEmployee(Employee emp)
+    {
+        if (emp != null)
+        {
+            System.out.println(
+                    emp.emp_no + " "
+                            + emp.first_name + " "
+                            + emp.last_name + "\n"
+                            + emp.title + "\n"
+                            + "Salary:" + emp.salary + "\n"
+                            + emp.dept_name + "\n"
+                            + "Manager: " + emp.manager + "\n");
         }
     }
 }
